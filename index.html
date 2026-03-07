@@ -4,349 +4,349 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secure Account Demo</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #e7eaee;
-    color: #1f2a36;
-  }
-  .topbar {
-    background: #ffffff;
-    border-bottom: 1px solid #d7dbe0;
-    padding: 16px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav {
-    display: flex;
-    gap: 34px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .nav span {
-    cursor: default;
-  }
-  .signin-chip {
-    background: #355e96;
-    color: white;
-    padding: 14px 20px;
-    border-radius: 4px;
-    font-weight: 700;
-  }
-  .hero {
-    width: 100%;
-    min-height: calc(100vh - 74px);
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    background: linear-gradient(90deg, #3f63a2 0%, #3f63a2 55%, #dfe4e8 55%, #dfe4e8 100%);
-  }
-  .left {
-    position: relative;
-    overflow: hidden;
-    min-height: 640px;
-    background:
-      radial-gradient(circle at 12% 55%, #3f63a2 0 48%, transparent 48.5%),
-      linear-gradient(0deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
-      linear-gradient(135deg, #a8b7c1, #d8dfdd 45%, #83927e 46%, #a1b28e 60%, #65725d 100%);
-  }
-  .left-content {
-    position: absolute;
-    left: 110px;
-    top: 155px;
-    max-width: 470px;
-    color: #fff;
-  }
-  .left h1 {
-    margin: 0 0 24px 0;
-    font-size: 56px;
-    line-height: 1.1;
-    font-weight: 800;
-    letter-spacing: -1px;
-  }
-  .left p {
-    font-size: 20px;
-    line-height: 1.6;
-    margin: 0 0 28px 0;
-  }
-  .buttons {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-  }
-  .btn-primary {
-    background: #e6a33a;
-    color: #16212c;
-    border: none;
-    padding: 18px 28px;
-    font-weight: 800;
-    font-size: 16px;
-    border-radius: 4px;
-  }
-  .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid rgba(255,255,255,.85);
-    padding: 16px 26px;
-    font-weight: 800;
-    font-size: 16px;
-    border-radius: 4px;
-  }
-  .right {
-    position: relative;
-    padding: 0 30px 30px 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-  .login-card {
-    margin-top: 0;
-    width: 430px;
-    background: #f6f6f6;
-    border: 1px solid #d2d2d2;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    position: absolute;
-    top: 0;
-    right: 55px;
-  }
-  .login-top {
-    padding: 48px 40px 24px;
-    background: #f6f6f6;
-  }
-  .demo-badge {
-    font-size: 12px;
-    color: #5f6d79;
-    font-weight: 700;
-    letter-spacing: .08em;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-  .login-top h2 {
-    margin: 0;
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-  }
-  .accent {
-    width: 90px;
-    height: 5px;
-    background: #d89a37;
-    margin: 14px 0 34px;
-  }
-  .field {
-    margin-bottom: 22px;
-  }
-  .field label {
-    display: block;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .field input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 16px;
-    border: 2px solid #bebebe;
-    border-radius: 3px;
-    font-size: 18px;
-    background: white;
-  }
-  .remember {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 10px 0 26px;
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .remember input {
-    width: 22px;
-    height: 22px;
-  }
-  .signin-btn {
-    width: 100%;
-    background: #355e96;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 16px 18px;
-    font-size: 18px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-  .login-bottom {
-    background: #ececec;
-    padding: 28px 40px 34px;
-    border-top: 1px solid #dddddd;
-  }
-  .login-bottom a {
-    display: block;
-    color: #2d5c97;
-    font-size: 18px;
-    font-weight: 700;
-    margin: 14px 0;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .message {
-    display: none;
-    margin-top: 14px;
-    padding: 12px 14px;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  .message.error {
-    background: #fff1f1;
-    border: 1px solid #d8aaaa;
-    color: #7c1d1d;
-  }
-  .message.success {
-    background: #eef8ef;
-    border: 1px solid #a7c6aa;
-    color: #1d5e26;
-  }
-  .notice {
-    font-size: 13px;
-    color: #63707b;
-    margin-top: 14px;
-  }
-  .footer-note {
-    background: #f3f3f3;
-    text-align: center;
-    padding: 14px 24px 22px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  @media (max-width: 1100px) {
-    .hero {
-      grid-template-columns: 1fr;
-      background: #3f63a2;
-    }
-    .right {
-      position: static;
-      padding: 20px;
-      justify-content: center;
-      background: #e7eaee;
-    }
-    .login-card {
-      position: static;
-      width: min(92vw, 430px);
-    }
-    .left {
-      min-height: 420px;
-    }
-    .left-content {
-      left: 32px;
-      right: 32px;
-      top: 90px;
-      max-width: 500px;
-    }
-    .left h1 {
-      font-size: 42px;
-    }
-  }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #e7eaee;
+  color: #1f2a36;
+}
+
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #d7dbe0;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  display: flex;
+  gap: 34px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.signin-chip {
+  background: #355e96;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.hero {
+  width: 100%;
+  min-height: calc(100vh - 74px);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  background: linear-gradient(90deg, #3f63a2 0%, #3f63a2 55%, #dfe4e8 55%);
+}
+
+.left {
+  position: relative;
+  overflow: hidden;
+  min-height: 640px;
+  background:
+  radial-gradient(circle at 12% 55%, #3f63a2 0 48%, transparent 48.5%),
+  linear-gradient(0deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
+  linear-gradient(135deg,#a8b7c1,#d8dfdd 45%,#83927e 46%,#a1b28e 60%,#65725d 100%);
+}
+
+.left-content {
+  position: absolute;
+  left: 110px;
+  top: 155px;
+  max-width: 470px;
+  color: white;
+}
+
+.left h1 {
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.left p {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-primary {
+  background: #e6a33a;
+  border: none;
+  padding: 18px 28px;
+  font-weight: 800;
+  border-radius: 4px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid white;
+  padding: 16px 26px;
+  font-weight: 800;
+  border-radius: 4px;
+  color: white;
+}
+
+.right {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.login-card {
+  width: 430px;
+  background: #f6f6f6;
+  border: 1px solid #d2d2d2;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  position: absolute;
+  right: 55px;
+}
+
+.login-top {
+  padding: 48px 40px 24px;
+}
+
+.demo-badge {
+  font-size: 12px;
+  color: #5f6d79;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.login-top h2 {
+  font-size: 34px;
+  margin: 10px 0;
+}
+
+.accent {
+  width: 90px;
+  height: 5px;
+  background: #d89a37;
+  margin: 14px 0 34px;
+}
+
+.field {
+  margin-bottom: 22px;
+}
+
+.field label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #bebebe;
+  font-size: 18px;
+}
+
+.remember {
+  margin-bottom: 20px;
+}
+
+.signin-btn {
+  width: 100%;
+  background: #355e96;
+  color: white;
+  border: none;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.message {
+  display: none;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.message.error {
+  background: #fff1f1;
+  border: 1px solid #d8aaaa;
+}
+
+.message.success {
+  background: #eef8ef;
+  border: 1px solid #a7c6aa;
+}
+
+.login-bottom {
+  background: #ececec;
+  padding: 28px 40px;
+}
+
+.login-bottom a {
+  display: block;
+  margin: 10px 0;
+  color: #2d5c97;
+}
+
+.footer-note {
+  text-align: center;
+  padding: 14px;
+  background: #f3f3f3;
+}
 </style>
 </head>
+
 <body>
-  <div class="topbar">
-    <div class="nav">
-      <span>Accounts</span>
-      <span>Loans</span>
-      <span>Planning &amp; Insurance</span>
-      <span>Digital Services</span>
-      <span>Resources &amp; Tools</span>
-      <span>Join</span>
-      <span>⌕</span>
-    </div>
-    <div class="signin-chip">Sign in</div>
-  </div>
 
-  <div class="hero">
-    <div class="left">
-      <div class="left-content">
-        <h1>A safe, smart way to save</h1>
-        <p>Use this classroom training gateway to enter the demo portal and explore savings, transfers, and account management.</p>
-        <div class="buttons">
-          <button class="btn-primary" type="button">Learn more</button>
-          <button class="btn-secondary" type="button">Open account</button>
-        </div>
-      </div>
-    </div>
+<div class="topbar">
+<div class="nav">
+<span>Accounts</span>
+<span>Loans</span>
+<span>Planning & Insurance</span>
+<span>Digital Services</span>
+<span>Resources & Tools</span>
+<span>Join</span>
+</div>
+<div class="signin-chip">Sign in</div>
+</div>
 
-    <div class="right">
-      <div class="login-card">
-        <div class="login-top">
-          <div class="demo-badge">Classroom demo</div>
-          <h2>Member Access</h2>
-          <div class="accent"></div>
+<div class="hero">
 
-          <div class="field">
-            <label for="userid">User ID</label>
-            <input id="userid" type="text" placeholder="Enter your User ID" autocomplete="off">
-          </div>
+<div class="left">
+<div class="left-content">
+<h1>A safe, smart way to save</h1>
+<p>Use this classroom training gateway to enter the demo portal.</p>
 
-          <div class="remember">
-            <input id="remember" type="checkbox">
-            <label for="remember" style="margin:0; font-size:18px; font-weight:600;">Remember me</label>
-          </div>
+<div class="buttons">
+<button class="btn-primary">Learn more</button>
+<button class="btn-secondary">Open account</button>
+</div>
 
-          <div class="field">
-            <label for="password">Password</label>
-            <input id="password" type="password" placeholder="Enter your Password" autocomplete="off">
-          </div>
+</div>
+</div>
 
-          <button class="signin-btn" id="signinBtn" type="button">Sign in</button>
+<div class="right">
 
-          <div id="errorBox" class="message error">Incorrect demo credentials. Use the classroom demo login provided by your instructor.</div>
-          <div id="successBox" class="message success">Access granted. Opening the demo portal...</div>
-          <div class="notice">Demo credentials are required to continue to the training portal.</div>
-        </div>
+<div class="login-card">
 
-        <div class="login-bottom">
-          <a>Enroll in Member Access</a>
-          <a>Forgotten Password</a>
-          <a>Online Security</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="login-top">
 
-  <div class="footer-note">
-    This is a classroom training login for demonstration purposes.
-  </div>
+<div class="demo-badge">Classroom demo</div>
+<h2>Member Access</h2>
+<div class="accent"></div>
+
+<div class="field">
+<label>User ID</label>
+<input id="userid" type="text">
+</div>
+
+<div class="field">
+<label>Password</label>
+<input id="password" type="password">
+</div>
+
+<button class="signin-btn" id="signinBtn">Sign in</button>
+
+<div id="errorBox" class="message error">
+Incorrect demo credentials.
+</div>
+
+<div id="successBox" class="message success">
+Access granted. Opening portal...
+</div>
+
+</div>
+
+<div class="login-bottom">
+<a>Enroll in Member Access</a>
+<a>Forgotten Password</a>
+<a>Online Security</a>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="footer-note">
+This is a classroom training login for demonstration purposes.
+</div>
 
 <script>
+
+/* Demo portal login */
 const DEMO_USER = "0020457652";
 const DEMO_PASS = "Hopkins007";
 
-function tryLogin() {
-  const user = document.getElementById("userid").value.trim();
-  const pass = document.getElementById("password").value;
-  const errorBox = document.getElementById("errorBox");
-  const successBox = document.getElementById("successBox");
+/* Redirect usernames */
+const redirectUsers = {
+  "0020486406": "https://www.google.com",
+  "1111111111": "https://www.yahoo.com",
+  "2222222222": "https://www.bing.com"
+};
 
-  errorBox.style.display = "none";
-  successBox.style.display = "none";
+function showMessage(type){
 
-  if (user === DEMO_USER && pass === DEMO_PASS) {
-    successBox.style.display = "block";
-    setTimeout(() => {
-      window.location.href = "portal.html";
-    }, 700);
-  } else {
-    errorBox.style.display = "block";
-  }
+const errorBox = document.getElementById("errorBox");
+const successBox = document.getElementById("successBox");
+
+errorBox.style.display = "none";
+successBox.style.display = "none";
+
+if(type === "error"){
+errorBox.style.display = "block";
+}
+
+if(type === "success"){
+successBox.style.display = "block";
+}
+
+}
+
+function tryLogin(){
+
+const user = document.getElementById("userid").value.trim();
+const pass = document.getElementById("password").value;
+
+/* Redirect login */
+if(redirectUsers[user]){
+window.location.href = redirectUsers[user];
+return;
+}
+
+/* Demo portal login */
+if(user === DEMO_USER && pass === DEMO_PASS){
+
+showMessage("success");
+
+setTimeout(function(){
+window.location.href = "portal.html";
+},700);
+
+return;
+}
+
+/* Invalid login */
+showMessage("error");
+
 }
 
 document.getElementById("signinBtn").addEventListener("click", tryLogin);
-document.getElementById("password").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") tryLogin();
+
+document.getElementById("password").addEventListener("keydown", function(e){
+if(e.key === "Enter") tryLogin();
 });
-document.getElementById("userid").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") tryLogin();
+
+document.getElementById("userid").addEventListener("keydown", function(e){
+if(e.key === "Enter") tryLogin();
 });
+
 </script>
+
 </body>
 </html>
