@@ -745,6 +745,7 @@
       <div class="info-box">
         <h2>Messaging Preferences</h2>
         <div>Set up text notifications for balances, transfers, and security updates.</div>
+
         <div class="balance-card" style="margin-top:12px;">
           <strong>Daily CashPoints update</strong>
           <div style="margin-top:8px;">
@@ -754,7 +755,7 @@
           <div class="action-row">
             <button class="action-btn" onclick="setCashPointsAmount()">Update CashPoints</button>
           </div>
-          <div class="small-note">This lets you manually change the CashPoints Global amount for the day. The new amount updates on the home page too and stays saved in the browser.</div>
+          <div class="small-note">This lets you manually change the CashPoints Global amount for the day. The new amount updates on the Summary page too and stays saved in the browser.</div>
         </div>
       </div>
     </div>
@@ -798,12 +799,9 @@ function dailyVariation(base, seed) {
   return +(base + variation).toFixed(2);
 }
 
-
 function loadCashPoints() {
   const stored = localStorage.getItem("cashpointsBalance");
-  if (stored !== null) {
-    balances.cashpoints = parseFloat(stored);
-  }
+  if (stored !== null) balances.cashpoints = parseFloat(stored);
 }
 
 function saveCashPoints() {
@@ -833,21 +831,49 @@ let balances = {
 let transferHistory = [];
 
 function updateAllBalances() {
-  document.getElementById("checkingBalance").innerText = money(balances.checking);
-  document.getElementById("saloBalance").innerText = money(balances.salo);
-  document.getElementById("shareBalance").innerText = money(balances.share);
-  document.getElementById("cashpointsBalance").innerText = money(balances.cashpoints);
-  document.getElementById("cashpointsTotal").innerText = money(balances.cashpoints);
+  const checkingEl = document.getElementById("checkingBalance");
+  const saloEl = document.getElementById("saloBalance");
+  const shareEl = document.getElementById("shareBalance");
+  const cashpointsEl = document.getElementById("cashpointsBalance");
+  const cashpointsTotalEl = document.getElementById("cashpointsTotal");
+  const totalEl = document.getElementById("firstSectionTotal");
+
+  if (checkingEl) checkingEl.innerText = money(balances.checking);
+  if (saloEl) saloEl.innerText = money(balances.salo);
+  if (shareEl) shareEl.innerText = money(balances.share);
+  if (cashpointsEl) cashpointsEl.innerText = money(balances.cashpoints);
+  if (cashpointsTotalEl) cashpointsTotalEl.innerText = money(balances.cashpoints);
+
+  const firstSectionTotal = balances.checking + balances.salo + balances.share + balances.zard;
+  if (totalEl) totalEl.innerText = money(firstSectionTotal);
+
+  const moveShareEl = document.getElementById("moveShareBalance");
+  const moveCheckingEl = document.getElementById("moveCheckingBalance");
+  const moveSaloEl = document.getElementById("moveSaloBalance");
+  const moveCashpointsEl = document.getElementById("moveCashpointsBalance");
+  if (moveShareEl) moveShareEl.innerText = money(balances.share);
+  if (moveCheckingEl) moveCheckingEl.innerText = money(balances.checking);
+  if (moveSaloEl) moveSaloEl.innerText = money(balances.salo);
+  if (moveCashpointsEl) moveCashpointsEl.innerText = money(balances.cashpoints);
+
   const cpInput = document.getElementById("cashpointsManualInput");
   if (cpInput) cpInput.value = balances.cashpoints.toFixed(2);
+}
 
-  const total = balances.checking + balances.salo + balances.share + balances.zard;
-  document.getElementById("firstSectionTotal").innerText = money(total);
+function setCashPointsAmount() {
+  const input = document.getElementById("cashpointsManualInput");
+  const raw = input ? parseFloat(input.value) : NaN;
 
-  document.getElementById("moveShareBalance").innerText = money(balances.share);
-  document.getElementById("moveCheckingBalance").innerText = money(balances.checking);
-  document.getElementById("moveSaloBalance").innerText = money(balances.salo);
-  document.getElementById("moveCashpointsBalance").innerText = money(balances.cashpoints);
+  if (!input || Number.isNaN(raw) || raw < 0) {
+    alert("Please enter a valid CashPoints amount.");
+    return;
+  }
+
+  balances.cashpoints = +raw.toFixed(2);
+  saveCashPoints();
+  loadCashPoints();
+updateAllBalances();
+  alert("CashPoints Global updated to " + money(balances.cashpoints) + ".");
 }
 
 function clearTabs() {
@@ -903,24 +929,7 @@ function submitTransfer() {
     amount: amount
   });
 
-  
-function setCashPointsAmount() {
-  const input = document.getElementById("cashpointsManualInput");
-  const raw = input ? parseFloat(input.value) : NaN;
-
-  if (!input || Number.isNaN(raw) || raw < 0) {
-    alert("Please enter a valid CashPoints amount.");
-    return;
-  }
-
-  balances.cashpoints = +raw.toFixed(2);
-  saveCashPoints();
   updateAllBalances();
-  alert("CashPoints Global updated to " + money(balances.cashpoints) + ".");
-}
-
-loadCashPoints();
-updateAllBalances();
 
   success.innerText = "Transfer successful: " + money(amount) + " moved from Share to " + getAccountLabel(to) + ".";
   success.style.display = "block";
